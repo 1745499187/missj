@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	    http://www.springframework.org/schema/beans/spring-beans.xsd
+	    http://www.springframework.org/schema/context
+	    http://www.springframework.org/schema/context/spring-context.xsd
+	    http://www.springframework.org/schema/mvc
+	    http://www.springframework.org/schema/mvc/spring-mvc.xsd"
+       default-autowire="byName">
+
+    <!-- 加载配置文件 -->
+    <!--     <context:property-placeholder location="classpath:/conf/spring-mvc.properties" ignore-unresolvable="true"/>
+     -->
+    <!-- 视图解释类 -->
+    <!-- 配置velocity引擎 -->
+    <bean id="velocityConfigurer" class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
+        <property name="resourceLoaderPath" value="/view/" /><!-- 模板存放的路径 -->
+        <property name="configLocation" value="classpath:/conf/velocity.properties" />
+    </bean>
+
+    <!-- velocity视图解析 -->
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.velocity.VelocityLayoutViewResolver">
+        <!-- 		<property name="prefix" value="" /> -->
+        <property name="suffix" value=".vm.htm" />
+        <property name="contentType" value="text/html;charset=utf-8" />
+        <property name="layoutUrl" value="layout/default.vm.htm"/>
+        <property name="exposeRequestAttributes" value="true" />
+        <property name="exposeSessionAttributes" value="true" />
+        <property name="exposeSpringMacroHelpers" value="true" />
+        <property name="toolboxConfigLocation" value="/WEB-INF/classes/conf/velocity-toolbox.xml" />
+    </bean>
+    <!-- exposeRequestAttributes exposeSessionAttributes两个属性都被设置为true。 -->
+
+    <!--<bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">-->
+    <bean id="exceptionResolver" class="org.weibin.wbj.web.extend.WbExceptionResolver">
+        <property name="exceptionAttribute" value="message"/>
+        <!-- 设置日志输出级别，不定义则默认不输出警告等错误日志信息 -->
+        <property name="warnLogCategory" value="ERROR"/>
+        <property name="defaultErrorView" value="global/error"/>
+        <property name="defaultStatusCode" value="500"/>
+        <property name="exceptionMappings">
+            <props>
+                <prop key="java.lang.Exception">global/error</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!-- 欢迎页面指向views/index.ftl.html -->
+    <mvc:view-controller path="/" view-name="index/index"/>
+
+    <!-- 自动扫描的包名 -->
+    <context:component-scan base-package="org.weibin.wbj.web.controller"/>
+
+    <!-- 默认的注解映射的支持 -->
+    <mvc:annotation-driven/>
+
+    <!-- 拦截器 -->
+    <!-- <mvc:interceptors> -->
+    <!-- <bean class="com.core.mvc.MyInteceptor" /> -->
+    <!-- </mvc:interceptors> -->
+
+    <!-- 对静态资源文件的访问：默认处理器 方案一 （二选一） -->
+    <!--<mvc:default-servlet-handler/>-->
+
+    <!-- 对静态资源文件的访问：资源映射 方案二 （二选一） -->
+    <mvc:resources mapping="/statics/**" location="/statics/" cache-period="31556926"/>
+    <!-- 	<mvc:resources mapping="/img/**" location="/img/" cache-period="31556926" /> -->
+    <!-- 	<mvc:resources mapping="/js/**" location="/js/" cache-period="31556926" /> -->
+    <!-- 	<mvc:resources mapping="/css/**" location="/css/" cache-period="31556926" /> -->
+
+</beans>

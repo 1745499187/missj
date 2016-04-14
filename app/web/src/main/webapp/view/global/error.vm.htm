@@ -1,0 +1,16 @@
+#set($layout="layout/exception.vm.htm")
+
+<div class="col-md-10 col-md-offset-1">
+
+    <legend class="text-center">出错啦!</legend>
+
+    <div class="well" >
+        错误码: $!errorCode<br>
+        错误描述: $!message
+    </div>
+    <div style="overflow-x: auto;">
+        <pre>
+        $!exceptionStack
+        </pre>
+    </div>
+</div>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+
+    <display-name>wbj-web</display-name>
+    <welcome-file-list>
+        <welcome-file>index.htm</welcome-file>
+    </welcome-file-list>
+
+    <!--  变量定义，变量名不可更改   -->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:/spring/appctx-*.xml</param-value>
+    </context-param>
+    <context-param>
+        <param-name>log4jConfigLocation</param-name>
+        <param-value>classpath:/conf/log4j.properties</param-value>
+    </context-param>
+
+
+    <!--将Spring MVC的编码设置为utf-8，以防止HttpServletRequest中的中文参数出现乱码 -->
+    <filter>
+        <filter-name>CharacterEncodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>utf-8</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>CharacterEncodingFilter</filter-name>
+        <servlet-name>springMVC</servlet-name>
+    </filter-mapping>
+
+    <!-- 使用HiddenHttpMethodFilter使SpringMVC支持RESTful风格 -->
+    <!--使用说明：html只支持get和post两种方法，为了让html也支持put，delete方法，需要在form中设置个隐藏field-->
+    <!--如：<input type="hidden" name="_method" value="put" /> （注意input的name必须是"_method"）-->
+    <!--并且需要将form的action设置为"post"，HiddenHttpMethodFilter只对post表单进行过滤。-->
+    <!--这样，HiddenHttpMethodFilter就会将_method的值设置为request的method，然后再进行后续处理。-->
+    <filter>
+        <filter-name>HiddenHttpMethodFilter</filter-name>
+        <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>HiddenHttpMethodFilter</filter-name>
+        <servlet-name>springMVC</servlet-name>
+    </filter-mapping>
+
+    <!-- spring security配置 -->
+    <filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <servlet-name>springMVC</servlet-name>
+    </filter-mapping>
+
+    <!--  Spring 容器启动监听器 -->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    <!--  加载 log4j -->
+    <listener>
+        <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+    </listener>
+    <!--  监听session事件  -->
+    <!-- 	<listener> -->
+    <!--         <listener-class>com.aicire.ehome.listener.SessionListener</listener-class> -->
+    <!--     </listener> -->
+
+    <!--  Spring MVC  -->
+    <servlet>
+        <servlet-name>springMVC</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:/spring/appctx-spring-mvc.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>springMVC</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
+    <session-config>
+        <!-- 配置session的超时管理,以分钟为单位 -->
+        <session-timeout>30</session-timeout>
+    </session-config>
+
+    <!--重定向404错误-->
+    <error-page>
+        <error-code>404</error-code>
+        <location>/oops/notfound.htm</location>
+    </error-page>
+
+</web-app>

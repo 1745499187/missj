@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 1.4和2.0的配置差异巨大, spring4.2.4还是用的velocity-tools 1.x, 如果要用2.0, 则需要自行配置viewClass -->
+<toolbox>
+    <!-- 工具类 -->
+    <tool>
+        <key>securityUtil</key>
+        <scope>application</scope>
+        <class>org.weibin.wbj.web.util.SecurityUtil</class>
+    </tool>
+
+    <!-- 常量定义 -->
+    <data type="list">
+        <key>sampleList</key>
+        <value>Mon,Tue,Wed,Thu,Fri,Sat,Sun</value>
+    </data>
+    <data type="String">
+        <key>sampleString</key>
+        <value>Mon,Tue,Wed,Thu,Fri,Sat,Sun</value>
+    </data>
+</toolbox>

@@ -1,0 +1,50 @@
+#set($layout="layout/plain.vm.htm")
+
+<body class="body-bg-login">
+    <div class="container-fluid">
+        <div class="row" style="height: 120px;"></div>
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <legend>
+                    <h1>私人空间, 非请勿入</h1>
+                </legend>
+                #if ($isError)
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <strong>错误!</strong> 登录失败,请检查账户或密码
+                </div>
+                #end
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <form class="form-horizontal" action="/login.htm" method="POST">
+                    <div class="form-group">
+                        <div class="col-md-6 col-md-offset-3">
+                            <input type="text" class="form-control" id="inputUsername" name="username" placeholder="账户" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-6 col-md-offset-3">
+                            <input type="password" class="form-control" id="inputPassword" name="password" placeholder="密码" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-6 col-md-offset-3">
+                            <input type="submit" class="col-md-12 btn btn-success btn-primary" value="登录" />
+                        </div>
+                    </div>
+                    <!-- CSRF token -->
+                    <input type="hidden" name="$!{_csrf.parameterName}" value="$!{_csrf.token}"/>
+                    <div class="form-group">
+                        <div class="col-md-6 col-md-offset-3">
+                            <div style="text-align: center;">
+                                <a href="/about.htm" title="难道你看上我了?表啦~~" style="color: lightgoldenrodyellow;">如有问题请猛戳我!</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
